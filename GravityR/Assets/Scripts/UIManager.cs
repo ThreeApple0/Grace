@@ -29,6 +29,8 @@ public class UIManager : MonoBehaviour
         GM.IsGameing = true;
         PM.IsGameing = true;
         LocalScoreTx.text = "0";
+
+        PM.RealPos = PM.transform.position;
     }
     public void OnGameOver()
     {

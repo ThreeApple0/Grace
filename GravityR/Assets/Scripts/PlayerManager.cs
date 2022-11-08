@@ -7,6 +7,8 @@ public class PlayerManager : MonoBehaviour
 {
     public Vector2 MoveDir;
     public Vector2 RealVec;
+
+    public Vector3 RealPos;
     public float maxSpeed=50;
     public bool IsGameing = false;
     public FixedJoystick Joyst;
@@ -29,7 +31,10 @@ public class PlayerManager : MonoBehaviour
         MainCam = Camera.main;
         rb = GetComponent<Rigidbody2D>();
     }
-
+    private void Start()
+    {
+        RealPos = transform.position;
+    }
     // Update is called once per frame
     void Update()
     {
@@ -96,7 +101,9 @@ public class PlayerManager : MonoBehaviour
 
         // rb.AddForce(MoveDir * MoveSpeed * Time.deltaTime, ForceMode2D.Force);
         //rb.velocity = RealVec;
-        transform.position = new Vector3(transform.position.x + MoveDir.x*Time.deltaTime, transform.position.y + MoveDir.y* Time.deltaTime, 0);
+        
+        RealPos = new Vector3(RealPos.x + MoveDir.x * Time.deltaTime, RealPos.y + MoveDir.y * Time.deltaTime, 0);
+        transform.position = Vector3.Lerp(transform.position, RealPos, 0.9f);
     }
     void ScoreCheck()
     {

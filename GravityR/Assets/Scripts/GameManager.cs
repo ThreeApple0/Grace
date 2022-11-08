@@ -25,7 +25,7 @@ public class GameManager : MonoBehaviour
     {
         PlM.RealVec = Vector2.zero;
         PlM.MoveDir = Vector2.zero;
-       
+        
         mapNum = 0;
     }
 }
