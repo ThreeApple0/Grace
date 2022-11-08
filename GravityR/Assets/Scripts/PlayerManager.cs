@@ -6,6 +6,7 @@ using UnityEngine.UI;
 public class PlayerManager : MonoBehaviour
 {
     public Vector2 MoveDir;
+    public Vector2 RealVec;
     public bool IsGameing = false;
     public FixedJoystick Joyst;
     public float MoveSpeed = 5f;
@@ -15,8 +16,8 @@ public class PlayerManager : MonoBehaviour
     public int NowMaxScore = 0;
     public Rigidbody2D rb;
     public UIManager UIM;
-
-    public int mapNum = 0;
+    public GameManager GM;
+    public float vecMM;
 
     GameObject MapP;
     // Start is called before the first frame update
@@ -27,7 +28,7 @@ public class PlayerManager : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
+    void FixedUpdate()
     {
         if (IsGameing)
         {
@@ -45,16 +46,21 @@ public class PlayerManager : MonoBehaviour
 
     void CameraMove()
     {
-        MainCam.transform.position = Vector3.Lerp(MainCam.transform.position,
-            new Vector3(MainCam.transform.position.x, transform.position.y + 5, MainCam.transform.position.z), Time.deltaTime * 2f);
+        // MainCam.transform.position = Vector3.Lerp(MainCam.transform.position,
+        //new Vector3(MainCam.transform.position.x, transform.position.y + 5, MainCam.transform.position.z), Time.deltaTime * 2f);
 
+        MainCam.transform.position = new Vector3(MainCam.transform.position.x, transform.position.y + 5, MainCam.transform.position.z);
 
     }
 
     void PlayerMove()
     {
         MoveDir = new Vector2(Joyst.Horizontal,Joyst.Vertical).normalized;
-        rb.AddForce(MoveDir * MoveSpeed * Time.deltaTime, ForceMode2D.Force);
+        RealVec = RealVec + MoveDir * MoveSpeed;
+        vecMM = RealVec.magnitude;
+        
+        // rb.AddForce(MoveDir * MoveSpeed * Time.deltaTime, ForceMode2D.Force);
+        rb.velocity = RealVec;
     }
     void ScoreCheck()
     {
@@ -70,11 +76,11 @@ public class PlayerManager : MonoBehaviour
 
     void MapCreate()
     {
-        if (transform.position.y > mapNum * 50)
+        if (transform.position.y > GM.mapNum * 50)
         {
             MapP = Instantiate(Resources.Load("Map1")) as GameObject;
-            MapP.transform.position = new Vector3(-5, mapNum * 50+10, 0);
-            mapNum++;
+            MapP.transform.position = new Vector3(-5, GM.mapNum * 50+10, 0);
+            GM.mapNum++;
         }
     }
 

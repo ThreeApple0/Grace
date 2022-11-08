@@ -18,6 +18,8 @@ public class UIManager : MonoBehaviour
     // Start is called before the first frame update
     public void OnGameStartBt()
     {
+        GM.IsGameing = true;
+
         BestScoreTx.enabled = false;
         LobbyPn.SetActive(false);
 
@@ -45,5 +47,7 @@ public class UIManager : MonoBehaviour
 
         GM.IsGameing = false;
         PM.IsGameing = false;
+
+        GM.Resett();
     }
 }
