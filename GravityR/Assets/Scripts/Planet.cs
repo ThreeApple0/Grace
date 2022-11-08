@@ -34,7 +34,7 @@ public class Planet : MonoBehaviour
         dir = (transform.position - Player.transform.position).normalized;
         if (PM.IsGameing)
         {
-            Plrb.AddForce(GM.GravitySpeed * dir * GravityForce * Time.deltaTime);
+            //Plrb.AddForce(GM.GravitySpeed * dir * GravityForce * Time.deltaTime);
         }
        
     }

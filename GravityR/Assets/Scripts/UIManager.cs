@@ -23,8 +23,8 @@ public class UIManager : MonoBehaviour
         BestScoreTx.enabled = false;
         LobbyPn.SetActive(false);
 
-        joy1.enabled = true;
-        joy2.enabled = true;
+        //joy1.enabled = true;
+        //joy2.enabled = true;
 
         GM.IsGameing = true;
         PM.IsGameing = true;

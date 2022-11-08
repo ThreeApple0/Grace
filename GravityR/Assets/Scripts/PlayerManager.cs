@@ -7,9 +7,11 @@ public class PlayerManager : MonoBehaviour
 {
     public Vector2 MoveDir;
     public Vector2 RealVec;
+    public float maxSpeed=50;
     public bool IsGameing = false;
     public FixedJoystick Joyst;
     public float MoveSpeed = 5f;
+    public float BackSpeed = 5f;
     public Camera MainCam;
     public Text ScoreTx;
     public int NowScore=0;
@@ -17,6 +19,7 @@ public class PlayerManager : MonoBehaviour
     public Rigidbody2D rb;
     public UIManager UIM;
     public GameManager GM;
+    public TouchManager TM;
     public float vecMM;
 
     GameObject MapP;
@@ -28,7 +31,7 @@ public class PlayerManager : MonoBehaviour
     }
 
     // Update is called once per frame
-    void FixedUpdate()
+    void Update()
     {
         if (IsGameing)
         {
@@ -55,12 +58,45 @@ public class PlayerManager : MonoBehaviour
 
     void PlayerMove()
     {
-        MoveDir = new Vector2(Joyst.Horizontal,Joyst.Vertical).normalized;
-        RealVec = RealVec + MoveDir * MoveSpeed;
+        //MoveDir = new Vector2(Joyst.Horizontal,Joyst.Vertical).normalized;
+        //RealVec = RealVec + MoveDir * MoveSpeed;
+        if (TM.touchstat != 0)
+        {
+            MoveDir = new Vector2(MoveDir.x, MoveDir.y + MoveSpeed * Time.deltaTime);
+        }
+        else
+        {
+            MoveDir = new Vector2(MoveDir.x, MoveDir.y - BackSpeed * Time.deltaTime);
+        }
+
+        if(TM.touchstat == 2)
+        {
+            MoveDir = new Vector2(-MoveSpeed, MoveDir.y);
+        }
+        else if(TM.touchstat == 3)
+        {
+            MoveDir = new Vector2(MoveSpeed, MoveDir.y);
+        }
+        else
+        {
+            MoveDir = new Vector2(0, MoveDir.y);
+        }
+
+        if (MoveDir.y >= maxSpeed)
+        {
+            MoveDir = new Vector2(MoveDir.x, maxSpeed);
+        }
+        if (MoveDir.y <= 0)
+        {
+            MoveDir = new Vector2(MoveDir.x, 0);
+        }
+
+
         vecMM = RealVec.magnitude;
-        
+
         // rb.AddForce(MoveDir * MoveSpeed * Time.deltaTime, ForceMode2D.Force);
-        rb.velocity = RealVec;
+        //rb.velocity = RealVec;
+        transform.position = new Vector3(transform.position.x + MoveDir.x*Time.deltaTime, transform.position.y + MoveDir.y* Time.deltaTime, 0);
     }
     void ScoreCheck()
     {
